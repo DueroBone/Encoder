@@ -2,7 +2,7 @@ import re
 LetterDict = " ", "e", "n", "o", "a", "h", "t", "l", "d", "r", "s", "i", "g", "y", "w", "m", "u", "f", "1", "v", "p", "b", "c", "2", "k", "7", "6", "5", "j", "4", "3", "0", "9", "8", "z", "q", "x"
 BinaryDict = "00", "010", "0110", "1000", "1001", "1011", "1100", "10100", "11010", "111000", "11101", "11111", "011100", "011110", "011111", "101011", "110110", "110111", "0111010", "1010100", "1111000", "1111010", "1111011", "10101010", "11110010", "0011101100", "011101101", "011101110", "011101111", "101010110", "111100111", "1010101110", "1111001100", "1111001101", "10101011111", "101010111100", "10101011101"
 
-Mode = input("Are you encoding or decoding? (en/de)   ")
+Mode = input("Are you encoding or decoding? (e/d)   ")
 Word = input("What do you want to proccess?\n")
 
 def BinToInt(input):
@@ -41,13 +41,18 @@ def IntToBin(input):
         return "110"
     if input == "7":
         return "111"
-    return "000"
+    return "999"
 
 def Encode(input):
     output = ''
-    for letter in [*input.lower()]:
+    input = [*input.lower()]
+    for letter in input:
         if letter in LetterDict:
             output += BinaryDict[LetterDict.index(letter)]
+    for i in range(3):
+        if len(output)%3 != 0:
+            output += "00"
+    
     working = re.findall(r"...", output)
     output = ""
     for thing in working:
@@ -68,7 +73,7 @@ def Decode(input):
             working = ""
     return output
 
-if Mode == "de":
+if Mode == "d":
     print(Decode(Word))
-if Mode == "en":
+if Mode == "e":
     print(Encode(Word))
