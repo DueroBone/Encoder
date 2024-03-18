@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 import re
 import time
 import sys
@@ -49,18 +51,18 @@ if __name__ == "__main__":
         Mode = input("Are you encoding or decoding? (e/d)   ")
         Word = input("What do you want to proccess?\n")
     elif len(sys.argv) == 2:
-        Mode = sys.argv[1].lower()
+        Mode = sys.argv[1]
         Word = sys.stdin.read()
     else:
-        Mode = sys.argv[1].lower()
+        Mode = sys.argv[1]
         Word = sys.argv[2]
 
     startTime = time.time_ns()
     if Mode == "d":
-        foo = Decode(Word)
+        foo = Decode(Word.lower().strip())
         print(foo)
     elif Mode == "e":
-        foo = Encode(Word)
+        foo = Encode(Word.lower().strip())
         print(foo)
     else:
         print("Unknown mode! Use either e or d")
