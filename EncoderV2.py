@@ -4,10 +4,12 @@ import re
 import time
 import sys
 LetterDict = " ", "e", "n", "o", "a", "h", "t", "l", "d", "r", "s", "i", "g", "y", "w", "m", "u", "f", "1", "v", "p", "b", "c", "2", "k", "7", "6", "5", "j", "4", "3", "0", "9", "8", "z", "q", "x"
-BinaryDict = "00", "010", "0110", "1000", "1001", "1011", "1100", "10100", "11010", "111000", "11101", "11111", "011100", "011110", "011111", "101011", "110110", "110111", "0111010", "1010100", "1111000", "1111010", "1111011", "10101010", "11110010", "0011101100", "011101101", "011101110", "011101111", "101010110", "111100111", "1010101110", "1111001100", "1111001101", "10101011111", "101010111100", "10101011101"
+BinaryDict = "00", "010", "0110", "1000", "1001", "1011", "1100", "10100", "11010", "111000", "11101", "11111", "011100", "011110", "011111", "101011", "110110", "110111", "0111010", "1010100", "1111000", "1111010", "1111011", "10101010", "11110010", "011101100", "011101101", "011101110", "011101111", "101010110", "111100111", "1010101110", "1111001100", "1111001101", "10101011111", "101010111100", "101010111101"
 inOutDictionary = {"a": "00000", "b": "00001", "c": "00010", "d": "00011", "e": "00100", "f": "00101", "g": "00110", "h": "00111", "i": "01000", "j": "01001", "k": "01010", "l": "01011", "m": "01100", "n": "01101", "o": "01110", "p": "01111", "q": "10000", "r": "10001", "s": "10010", "t": "10011", "u": "10100", "v": "10101", "w": "10110", "x": "10111", "y": "11000", "z": "11001", "1": "11010", "2": "11011", "3": "11100", "4": "11101", "5": "11110", "6": "11111"}
 outInDictionary = dict((v, k) for k, v in inOutDictionary.items())
 
+# 7 -> 0011101100 -> hm
+# y -> 11000 -> y
 def BinToInt(input):
     return outInDictionary[input]
 
@@ -17,11 +19,14 @@ def IntToBin(input):
 
 
 def Encode(input):
+    input = input.lower().strip()
     output = ''
-    input = input.lower()
     for letter in input:
+        if letter == "7":
+            1 == 1
         if letter in LetterDict:
-            output += BinaryDict[LetterDict.index(letter)]
+            binToAdd = BinaryDict[LetterDict.index(letter)]
+            output += binToAdd
     while len(output) % 5 != 0:
         output += "00"
 
@@ -33,13 +38,15 @@ def Encode(input):
 
 
 def Decode(input):
+    input = input.lower().strip()
     working = ""
-    for thing in input:
-        working += IntToBin(thing)
-    input = working
+    for letter in input:
+        working += IntToBin(letter)
+    binary = working
+    length = len(binary)
     output = ""
     working = ""
-    for bit in input:
+    for bit in binary:
         working += bit
         if working in BinaryDict:
             output += LetterDict[BinaryDict.index(working)]
@@ -59,10 +66,10 @@ if __name__ == "__main__":
 
     startTime = time.time_ns()
     if Mode == "d":
-        foo = Decode(Word.lower().strip())
+        foo = Decode(Word)
         print(foo)
     elif Mode == "e":
-        foo = Encode(Word.lower().strip())
+        foo = Encode(Word)
         print(foo)
     else:
         print("Unknown mode! Use either e or d")
