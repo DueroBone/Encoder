@@ -20,28 +20,35 @@ def IntToBin(input):
     return inOutDictionary[input]
 
 
-def Encode(input):
-    input = input.lower().strip()
+def Encode(input: str):
+    input = input.lower()
     output = ''
+    zeros = 0
     for letter in input:
         if letter in mainDict.keys():
             output += mainDict[letter]
     while len(output) % 5 != 0:
-        output += "00"
+        output += "1"
+        zeros += 1
 
     working = re.findall(r".....", output)
     output = ""
     for thing in working:
         output += BinToInt(thing)
+    output += str(zeros)
     return output
 
 
-def Decode(input):
-    input = input.lower().strip()
+def Decode(input: str):
+    input = input.lower()
     working = ""
-    for letter in input:
+    for letter in input[:-1]:
         working += IntToBin(letter)
-    binary = working
+    paddingDigits = -int(input[-1])
+    if paddingDigits == 0:
+        binary = working
+    else:
+        binary = working[:paddingDigits]
     output = ""
     working = ""
     for bit in binary:

@@ -1,37 +1,40 @@
 import EncoderV2 as En
 from time import time
 
-In = open("bible.txt", "r").read()
-# In = "abcdefghijklmnopqrstuvwxyz 1234567890"
+writeToFile = False
+In = open("bible.txt", "r").read().lower()
+# In = " abcdefghijklmnopqrstuvwxyz 1234567890 "
+
+print("Encoding...", end="")
 T0 = time()
 encoded = En.Encode(In)
 T1 = time()
-print("...", end="")
+print(" Done!  Decoding...", end="")
 decoded = En.Decode(encoded)
 T2 = time()
-while True:
-    if decoded[-1] == " ":
-        decoded = decoded[:-1]
-    else:
-        break
-TEST1 = ""
-for letter in In.lower().strip():
-    TEST1 += letter + "\n"
-open("TEST1.txt", "w").write(TEST1)
-TEST2 = ""
-for letter in decoded:
-    TEST2 += letter + "\n"
-open("TEST2.txt", "w").write(TEST2)
-isSame = In.lower().strip() == decoded
-print(f"\r   \nEncoding took {T1 - T0} seconds")
-print(f"{len(In)} -> {len(encoded)}")
-print(f"\nDecoding took {T2 - T1} seconds")
-print(f"{len(encoded)} -> {len(decoded)}")
+if writeToFile:
+    open("encoded.txt", "w").write(encoded)
+    open("decoded.txt", "w").write(decoded)
+print("\r                                     ")
+isSame = In.lower() == decoded
 if isSame:
-    print("Success")
+    print("Success".upper())
 else:
-    In = In.lower().strip()
+    # In = In.lower().strip()
     print("Failed\n")
     print(f"{In[:100]}\n{decoded[:100]}")
     print()
+    print(f"{encoded[:100]}")
+    print()
+    print(f"{encoded[-100:]}")
+    print()
     print(f"{In[-100:]}\n{decoded[-100:]}")
+    print()
+
+print(f"Encoding took {T1 - T0:.5f} seconds")
+print(f"{len(In):,} -> {len(encoded):,} | {len(encoded) / len(In) * 100:.2f}%")
+print(f"{1 / ((T1 - T0) / len(In)):,.2f} chars/sec")
+print()
+print(f"Decoding took {T2 - T1:.5f} seconds")
+print(f"{len(encoded):,} -> {len(decoded):,} | {len(decoded) / len(encoded) * 100:.2f}%")
+print(f"{1 / ((T2 - T1) / len(encoded)):,.2f} chars/sec")
