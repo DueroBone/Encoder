@@ -61,7 +61,11 @@ def Decode(input: str):
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         Mode = input("Are you encoding or decoding? (e/d)   ")
-        Word = input("What do you want to proccess?\n")
+        if Mode == "s":
+            from getpass import getpass
+            Word = getpass("What do you want to proccess?\n")
+        else:
+            Word = input("What do you want to proccess?\n")
     elif len(sys.argv) == 2:
         Mode = sys.argv[1]
         Word = sys.stdin.read()
@@ -73,7 +77,7 @@ if __name__ == "__main__":
     if Mode == "d":
         foo = Decode(Word)
         print(foo)
-    elif Mode == "e":
+    elif Mode == "e" or Mode == "s":
         foo = Encode(Word)
         print(foo)
     else:
